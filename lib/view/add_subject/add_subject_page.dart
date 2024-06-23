@@ -2,6 +2,7 @@ import 'package:attendance/models/subject/subject_model.dart';
 import 'package:attendance/utils/routes/route_name.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import '../../boxes/boxes.dart';
 import '../../constant/app_style/app_color.dart';
 import '../../size_config.dart';
 import '../../utils/components/custom_round_button.dart';
@@ -180,6 +181,7 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
         buttonColor: kPrimaryColor,
         title: 'Next',
         onPress: () async {
+          final box = Boxes.getSubData();
           if (_formKey.currentState!.validate()) {
             final model = SubjectModel(
               subjectId: _uuid.v4().toString(),
@@ -190,8 +192,12 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
               creditHour: cHourController.text.trim(),
               percentage: int.tryParse(percentageController.text.trim()),
             );
-            Navigator.pushNamed(context, RouteName.addStudentPage,
-                arguments: model);
+            Navigator.pushNamed(
+              context,
+              RouteName.addStudentPage,
+              arguments: model,
+            );
+            box.add(model);
           }
         },
       ),

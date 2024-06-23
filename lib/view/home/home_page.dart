@@ -45,7 +45,14 @@ class _HomePageState extends State<HomePage> {
                     "${data[index].departmentName} - ${data[index].batchName}",
                 trailingFirstText: data[index].totalClasses.toString(),
                 trailingSecondText: 'Classes',
-                onPress: () {},
+                onPress: () {
+                  print('yuup');
+                  Navigator.pushNamed(
+                    context,
+                    RouteName.customTabBarPage,
+                    arguments: data[index],
+                  );
+                },
                 onLongPress: () {},
                 onDismiss: () {
                   delete(data[index]);

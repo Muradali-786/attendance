@@ -47,12 +47,15 @@ class CustomInputTextField extends StatelessWidget {
         enabled: enable,
         obscuringCharacter: 'x',
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
-        style: kBlackRegular,
+        style: const TextStyle(fontSize: 16, color: kPrimaryTextColor),
         decoration: InputDecoration(
           labelText: labelText,
           filled: true,
           fillColor: kWhite,
-          labelStyle: kBlackMedium,
+          labelStyle: TextStyle(
+            fontSize: 18,
+            color: focusNode.hasFocus ? kSecondaryTextColor : kTextGreyColor,
+          ),
           suffixIcon: isPasswordField ? suffixWidget : null,
           suffixIconColor: focusNode.hasFocus ? kPrimaryColor : kGrey,
           contentPadding: const EdgeInsets.all(18),

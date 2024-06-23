@@ -21,7 +21,7 @@ class AddStudentPage extends StatefulWidget {
 class _AddStudentPageState extends State<AddStudentPage> {
   @override
   Widget build(BuildContext context) {
-    // final String classId = widget.data['classId'].toString();
+
 
     SizeConfig().init(context);
     return Scaffold(
