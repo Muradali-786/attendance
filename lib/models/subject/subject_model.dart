@@ -1,4 +1,7 @@
+import 'package:attendance/models/attendance/attendance_model.dart';
 import 'package:hive/hive.dart';
+
+import '../student/student_model.dart';
 part 'subject_model.g.dart';
 
 @HiveType(typeId: 0)
@@ -20,6 +23,8 @@ class SubjectModel  extends HiveObject{
   @HiveField(7)
   final int totalClasses;
 
+
+
   SubjectModel({
     this.subjectId,
     this.totalClasses = 0,
@@ -29,5 +34,7 @@ class SubjectModel  extends HiveObject{
     required this.batchName,
     required this.creditHour,
     required this.percentage,
+
+
   });
 }

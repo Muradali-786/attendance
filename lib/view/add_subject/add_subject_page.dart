@@ -1,14 +1,15 @@
 import 'package:attendance/models/subject/subject_model.dart';
 import 'package:attendance/utils/routes/route_name.dart';
+import 'package:attendance/view_model/subject/subject_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import '../../boxes/boxes.dart';
 import '../../constant/app_style/app_color.dart';
 import '../../size_config.dart';
 import '../../utils/components/custom_round_button.dart';
 import '../../utils/components/custom_stepper.dart';
 import '../../utils/components/custon_input_text_field.dart';
 import '../../utils/utils.dart';
+import '../../view_model/boxes/boxes.dart';
 
 class AddSubjectPage extends StatefulWidget {
   const AddSubjectPage({super.key});
@@ -30,6 +31,7 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
   TextEditingController cHourController = TextEditingController();
   FocusNode cHourFocus = FocusNode();
   final Uuid _uuid = const Uuid();
+  final SubjectController _controller = SubjectController();
 
   @override
   void dispose() {
@@ -45,8 +47,6 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
     cHourFocus.dispose();
     super.dispose();
   }
-
-  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +181,6 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
         buttonColor: kPrimaryColor,
         title: 'Next',
         onPress: () async {
-          final box = Boxes.getSubData();
           if (_formKey.currentState!.validate()) {
             final model = SubjectModel(
               subjectId: _uuid.v4().toString(),
@@ -192,12 +191,12 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
               creditHour: cHourController.text.trim(),
               percentage: int.tryParse(percentageController.text.trim()),
             );
+
             Navigator.pushNamed(
               context,
               RouteName.addStudentPage,
               arguments: model,
             );
-            box.add(model);
           }
         },
       ),

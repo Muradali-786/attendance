@@ -5,7 +5,7 @@ import 'package:attendance/utils/routes/route_name.dart';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../boxes/boxes.dart';
+import '../../view_model/boxes/boxes.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,7 +46,6 @@ class _HomePageState extends State<HomePage> {
                 trailingFirstText: data[index].totalClasses.toString(),
                 trailingSecondText: 'Classes',
                 onPress: () {
-                  print('yuup');
                   Navigator.pushNamed(
                     context,
                     RouteName.customTabBarPage,

@@ -2,12 +2,17 @@ import 'package:attendance/constant/app_style/app_style.dart';
 import 'package:attendance/models/subject/subject_model.dart';
 import 'package:attendance/utils/components/custom_stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import '../../../constant/app_style/app_color.dart';
+import '../../../models/attendance/attendance_model.dart';
+import '../../../models/student/student_model.dart';
 import '../../../size_config.dart';
 import '../../../utils/components/common.dart';
 import '../../../utils/components/custom_round_button.dart';
+import '../../../utils/components/dialogs/add_student_dialog.dart';
 import '../../../utils/routes/route_name.dart';
+import '../../../view_model/subject/subject_controller.dart';
 import 'imports/import_dialog.dart';
 
 class AddStudentPage extends StatefulWidget {
@@ -19,10 +24,25 @@ class AddStudentPage extends StatefulWidget {
 }
 
 class _AddStudentPageState extends State<AddStudentPage> {
+  late Future<void> _openBoxesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _openBoxesFuture = _openHiveBoxes();
+  }
+
+  Future<void> _openHiveBoxes() async {
+    await Hive.openBox<StudentModel>(
+      "$STUDENT${widget.model!.subjectId}",
+    );
+    await Hive.openBox<AttendanceModel>(
+      "$ATTENDANCE${widget.model!.subjectId}",
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
-
     SizeConfig().init(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -79,6 +99,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         child: _text('PREVIOUS')),
                     TextButton(
                         onPressed: () {
+                          SubjectController().addSubject(widget.model!);
                           Navigator.pushReplacementNamed(
                               context, RouteName.homePage);
                         },
@@ -93,7 +114,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
               left: 0,
               child: AddStudentButton(
                 onTap: () async {
-                  // await addStudentDialog(context, classId);
+                  await addStudentDialog(
+                      context, widget.model!.subjectId.toString());
                 },
               ),
             )

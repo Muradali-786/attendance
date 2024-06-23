@@ -21,8 +21,7 @@ void main() async {
   Hive.registerAdapter(AttendanceModelAdapter());
 
   await Hive.openBox<SubjectModel>(SUBJECT);
-  await Hive.openBox<StudentModel>(STUDENT);
-  await Hive.openBox<AttendanceModel>(ATTENDANCE);
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: kPrimaryColor,
   ));

@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 part 'student_model.g.dart';
 
 @HiveType(typeId: 1)
-class StudentModel extends HiveObject{
+class StudentModel extends HiveObject {
   @HiveField(0)
   String? studentId;
   @HiveField(2)
@@ -27,6 +27,4 @@ class StudentModel extends HiveObject{
     this.totalAbsent = 0,
     this.totalLeaves = 0,
   });
-
-
 }

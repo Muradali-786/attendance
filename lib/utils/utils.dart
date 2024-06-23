@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constant/app_style/app_color.dart';
+
 
 class Utils {
   static void onFocusChange(
@@ -11,8 +13,8 @@ class Utils {
   // static toastMessage(String message) {
   //   Fluttertoast.showToast(
   //     msg: message,
-  //     backgroundColor: AppColor.kBlack,
-  //     textColor: AppColor.kWhite,
+  //     backgroundColor: kBlack,
+  //     textColor: kWhite,
   //     fontSize: 16,
   //   );
   // }

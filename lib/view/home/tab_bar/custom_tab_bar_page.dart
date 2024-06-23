@@ -3,7 +3,11 @@ import 'package:attendance/models/subject/subject_model.dart';
 import 'package:attendance/view/home/tab_bar/student/student_tab.dart';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
+import '../../../constant/app_style/app_style.dart';
+import '../../../models/attendance/attendance_model.dart';
+import '../../../models/student/student_model.dart';
 import '../../../size_config.dart';
 import 'attendance/attendance_tab.dart';
 import 'history/history_tab.dart';
@@ -20,11 +24,27 @@ class _CustomTabBarPageState extends State<CustomTabBarPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController =
       TabController(length: 3, vsync: this);
+  late Future<void> _openBoxesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _openBoxesFuture = _openHiveBoxes();
+  }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  Future<void> _openHiveBoxes() async {
+    await Hive.openBox<StudentModel>(
+      "$STUDENT${widget.model!.subjectId}",
+    );
+    await Hive.openBox<AttendanceModel>(
+      "$ATTENDANCE${widget.model!.subjectId}",
+    );
   }
 
   @override
@@ -85,9 +105,11 @@ class _CustomTabBarPageState extends State<CustomTabBarPage>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: const [
+                children: [
                   AttendanceTab(),
-                  StudentTab(),
+                  StudentTab(
+                    subId: widget.model!.subjectId.toString(),
+                  ),
                   HistoryTab(),
                 ],
               ),
