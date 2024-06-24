@@ -4,9 +4,11 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../constant/app_style/app_color.dart';
 import '../../../../size_config.dart';
 import '../../../../utils/components/custom_round_button.dart';
+import '../../../../utils/routes/route_name.dart';
 
 class AttendanceTab extends StatefulWidget {
-  const AttendanceTab({super.key});
+  final String subId;
+  const AttendanceTab({super.key,required this.subId});
 
   @override
   State<AttendanceTab> createState() => _AttendanceTabState();
@@ -74,7 +76,14 @@ class _AttendanceTabState extends State<AttendanceTab> {
           height: getProportionalHeight(36),
           width: getProportionalWidth(170),
           title: 'TAKE ATTENDANCE',
-          onPress: () {},
+          onPress: ()=> Navigator.pushNamed(
+            context,
+            RouteName.markStudentAttendancePage,
+            arguments: {
+              'classId': widget.subId,
+              'selectedDate': _selectedDay,
+            },
+          ),
           buttonColor: kSecondaryColor,
         ),
       ),

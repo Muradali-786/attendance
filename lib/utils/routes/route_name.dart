@@ -6,5 +6,7 @@ class RouteName {
   static const String addSubjectPage = 'subject_page';
   static const String addStudentPage = 'add_student_page';
   static const String customTabBarPage = 'custom_tab_bar_page';
+  static const String markStudentAttendancePage = 'mark_student_attendance_page';
+  static const String attendanceHistoryPage = 'attendance_history_page';
 
 }

@@ -4,12 +4,15 @@ import 'package:attendance/models/student/student_model.dart';
 import 'package:attendance/models/subject/subject_model.dart';
 import 'package:attendance/utils/routes/route_name.dart';
 import 'package:attendance/utils/routes/routes.dart';
+import 'package:attendance/view_model/attendance/attendance_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'constant/app_style/app_color.dart';
+import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,19 +39,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Attendee',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: false,
-        scaffoldBackgroundColor: kBgColor,
-        appBarTheme: const AppBarTheme(
-          color: kPrimaryColor,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AttendanceProvider>(
+          create: (_) => AttendanceProvider(),
+        ),
+      ],
+      child: ToastificationWrapper(
+        child: MaterialApp(
+          title: 'Attendee',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            useMaterial3: false,
+            scaffoldBackgroundColor: kBgColor,
+            appBarTheme: const AppBarTheme(
+              color: kPrimaryColor,
+            ),
+          ),
+          builder: EasyLoading.init(),
+          initialRoute: RouteName.homePage,
+          onGenerateRoute: Routes.generateRoute,
         ),
       ),
-      builder: EasyLoading.init(),
-      initialRoute: RouteName.homePage,
-      onGenerateRoute: Routes.generateRoute,
     );
   }
 }

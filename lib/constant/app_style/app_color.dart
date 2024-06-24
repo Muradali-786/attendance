@@ -9,6 +9,7 @@ const Color kBgColor = Color(0xfffafafa);
 
 const Color kBlack = Color(0xff000000);
 const Color kBlack0D = Color(0xff0d0d0d);
+const Color kDark=Color(0xff242424);
 
 const Color kGrey = Color(0xffD7D7D7);
 const Color kGreyB7 = Color(0xffB7B7B7);

@@ -2,7 +2,6 @@ import 'package:attendance/constant/app_style/app_color.dart';
 import 'package:attendance/models/subject/subject_model.dart';
 import 'package:attendance/utils/components/custom_list_tile.dart';
 import 'package:attendance/utils/routes/route_name.dart';
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../view_model/boxes/boxes.dart';

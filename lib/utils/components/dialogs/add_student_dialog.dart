@@ -5,7 +5,7 @@ import '../../../constant/app_style/app_color.dart';
 import '../../../models/student/student_model.dart';
 import '../../utils.dart';
 import '../custom_round_button.dart';
-import '../dialog_text_field.dart';
+import 'dialog_text_field.dart';
 
 Future<void> addStudentDialog(BuildContext context, String subId) async {
   final _formKey = GlobalKey<FormState>();
@@ -125,7 +125,8 @@ Future<void> addStudentDialog(BuildContext context, String subId) async {
                             bool isExist = StudentController()
                                 .checkStudentAlreadyExist(studentModel, subId);
                             if (isExist) {
-                              // Utils.toastMessage('Student with same registration exist');
+                                Utils.toastMessage('Student with same registration exist');
+
                             } else {
                               Navigator.pop(context);
                               StudentController()
@@ -150,7 +151,7 @@ Future<void> addStudentDialog(BuildContext context, String subId) async {
                             bool isExist = StudentController()
                                 .checkStudentAlreadyExist(studentModel, subId);
                             if (isExist) {
-                              // Utils.toastMessage('Student with same registration exist');
+                              Utils.toastMessage('Student with same registration exist');
                             } else {
                               StudentController().addStudent(studentModel, subId);
                               stdNameController.clear();

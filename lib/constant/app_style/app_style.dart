@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 // Black text styles
 TextStyle kBlackRegular = const TextStyle(
@@ -37,6 +38,10 @@ TextStyle kWhiteBold = const TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
 );
+String formatDate(DateTime dateTime) {
+  final formatter = DateFormat('yMMMMd');
+  return formatter.format(dateTime);
+}
 
 
 const String SUBJECT = 'Subject';

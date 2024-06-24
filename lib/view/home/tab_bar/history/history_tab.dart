@@ -1,11 +1,19 @@
+import 'package:attendance/models/attendance/attendance_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../constant/app_style/app_color.dart';
+import '../../../../constant/app_style/app_style.dart';
 import '../../../../size_config.dart';
+import '../../../../utils/components/custom_attendance_list.dart';
 import '../../../../utils/components/custom_round_button.dart';
+import '../../../../utils/routes/route_name.dart';
+import '../../../../view_model/boxes/boxes.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class HistoryTab extends StatefulWidget {
-  const HistoryTab({super.key});
+  final String subId;
+  const HistoryTab({super.key, required this.subId});
 
   @override
   State<HistoryTab> createState() => _HistoryTabState();
@@ -15,11 +23,34 @@ class _HistoryTabState extends State<HistoryTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-          children: [
-          Text('student')
-      ],
-    ),
+      body: ValueListenableBuilder<Box<AttendanceModel>>(
+        valueListenable: Boxes.getAtdData(widget.subId).listenable(),
+        builder: (context, box, _) {
+          var snap = box.values.toList().cast<AttendanceModel>();
+
+          if (box.isNotEmpty) {
+            return ListView.builder(
+              itemCount: box.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return CustomAttendanceList2(
+                  title:
+                      "${formatDate(snap[index].selectedDate)}\t${snap[index].currentTime} ",
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      RouteName.attendanceHistoryPage,
+                      arguments: snap[index],
+                    );
+                  },
+                );
+              },
+            );
+          } else {
+            return Center(child: Text('No students found'));
+          }
+        },
+      ),
       bottomSheet: Container(
         height: 36,
         alignment: Alignment.bottomCenter,

@@ -12,7 +12,7 @@ import '../../../../view_model/boxes/boxes.dart';
 
 class StudentTab extends StatefulWidget {
   final String subId;
-  const StudentTab({super.key, this.subId = ''});
+  const StudentTab({super.key, required this.subId});
 
   @override
   State<StudentTab> createState() => _StudentTabState();

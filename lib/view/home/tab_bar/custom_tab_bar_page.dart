@@ -106,11 +106,9 @@ class _CustomTabBarPageState extends State<CustomTabBarPage>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  AttendanceTab(),
-                  StudentTab(
-                    subId: widget.model!.subjectId.toString(),
-                  ),
-                  HistoryTab(),
+                  AttendanceTab(subId: widget.model!.subjectId.toString()),
+                  StudentTab(subId: widget.model!.subjectId.toString()),
+                  HistoryTab(subId: widget.model!.subjectId.toString(),),
                 ],
               ),
             ),
