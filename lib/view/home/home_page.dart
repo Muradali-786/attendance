@@ -52,9 +52,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 onLongPress: () {},
-                onDismiss: () {
-                  delete(data[index]);
-                },
+                onDismiss: () {},
               );
             },
           );
@@ -68,9 +66,5 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
       ),
     );
-  }
-
-  void delete(SubjectModel model) async {
-    await model.delete();
   }
 }

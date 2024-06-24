@@ -5,7 +5,7 @@ import '../student/student_model.dart';
 part 'subject_model.g.dart';
 
 @HiveType(typeId: 0)
-class SubjectModel  extends HiveObject{
+class SubjectModel extends HiveObject {
   @HiveField(0)
   String? subjectId;
   @HiveField(1)
@@ -21,9 +21,7 @@ class SubjectModel  extends HiveObject{
   @HiveField(6)
   final String creditHour;
   @HiveField(7)
-  final int totalClasses;
-
-
+  int totalClasses;
 
   SubjectModel({
     this.subjectId,
@@ -34,7 +32,5 @@ class SubjectModel  extends HiveObject{
     required this.batchName,
     required this.creditHour,
     required this.percentage,
-
-
   });
 }

@@ -19,78 +19,52 @@ class StudentTab extends StatefulWidget {
 }
 
 class _StudentTabState extends State<StudentTab> {
-  late Future<void> _openBoxesFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _openBoxesFuture = _openHiveBoxes();
-  }
-
-  Future<void> _openHiveBoxes() async {
-    await Hive.openBox<StudentModel>("$STUDENT${widget.subId}");
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _openBoxesFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else {
-          return Scaffold(
-            body: ValueListenableBuilder<Box<StudentModel>>(
-              valueListenable: Boxes.getStdData(widget.subId).listenable(),
-              builder: (context, box, _) {
-                var data = box.values.toList().cast<StudentModel>();
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: ValueListenableBuilder<Box<StudentModel>>(
+        valueListenable: Boxes.getStdData(widget.subId).listenable(),
+        builder: (context, box, _) {
+          var data = box.values.toList().cast<StudentModel>();
 
-                if (box.isNotEmpty) {
-                  return ListView.builder(
-                    itemCount: box.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return CustomListTile(
-                        title: data[index].studentName.toString(),
-                        keyValue: data[index].studentId.toString(),
-                        subtitle: data[index].studentRollNo.toString(),
-                        trailingFirstText:
-                            "${data[index].attendancePercentage.toString()}%",
-                        trailingSecondText: 'Attendance',
-                        onPress: () {},
-                        onLongPress: () {},
-                        onDismiss: () {
-
-                        },
-                      );
-                    },
-                  );
-                } else {
-                  return Center(child: Text('No students found'));
-                }
+          if (box.isNotEmpty) {
+            return ListView.builder(
+              itemCount: box.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return CustomListTile(
+                  title: data[index].studentName.toString(),
+                  keyValue: data[index].studentId.toString(),
+                  subtitle: data[index].studentRollNo.toString(),
+                  trailingFirstText:
+                      "${data[index].attendancePercentage.toString()}%",
+                  trailingSecondText: 'Attendance',
+                  onPress: () {},
+                  onLongPress: () {},
+                  onDismiss: () {},
+                );
               },
-            ),
-            bottomSheet: Container(
-              height: 36,
-              alignment: Alignment.bottomCenter,
-              margin: const EdgeInsets.only(bottom: 16),
-              child: CustomRoundButton(
-                height: getProportionalHeight(36),
-                width: getProportionalWidth(140),
-                title: 'ADD STUDENT',
-                onPress: () {
-                 addStudentDialog(context, widget.subId);
-                },
-                buttonColor: kSecondaryColor,
-              ),
-            ),
-          );
-        }
-      },
+            );
+          } else {
+            return Center(child: Text('No students found'));
+          }
+        },
+      ),
+      bottomSheet: Container(
+        height: 36,
+        alignment: Alignment.bottomCenter,
+        margin: const EdgeInsets.only(bottom: 16),
+        child: CustomRoundButton(
+          height: getProportionalHeight(36),
+          width: getProportionalWidth(140),
+          title: 'ADD STUDENT',
+          onPress: () {
+            addStudentDialog(context, widget.subId);
+          },
+          buttonColor: kSecondaryColor,
+        ),
+      ),
     );
   }
-
-
 }

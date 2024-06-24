@@ -1,7 +1,9 @@
 import 'package:attendance/models/attendance/attendance_model.dart';
 import 'package:attendance/models/student/student_model.dart';
 import 'package:attendance/size_config.dart';
+import 'package:attendance/utils/utils.dart';
 import 'package:attendance/view_model/attendance/attendance_controller.dart';
+import 'package:attendance/view_model/subject/subject_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../../constant/app_style/app_color.dart';
@@ -20,8 +22,7 @@ class MarkStudentAttendancePage extends StatefulWidget {
 }
 
 class _MarkStudentAttendancePageState extends State<MarkStudentAttendancePage> {
-
-  final AttendanceController _controller=AttendanceController();
+  final AttendanceController _controller = AttendanceController();
   List<String> stdIdList = [];
   @override
   Widget build(BuildContext context) {
@@ -101,8 +102,11 @@ class _MarkStudentAttendancePageState extends State<MarkStudentAttendancePage> {
           width: getProportionalWidth(175),
           title: 'SAVE ATTENDANCE',
           onPress: () {
-            AttendanceProvider p=Provider.of<AttendanceProvider>(context,listen: false);
-            final model=AttendanceModel(
+            AttendanceProvider p =
+                Provider.of<AttendanceProvider>(context, listen: false);
+
+            if (stdIdList.isNotEmpty) {
+              final model = AttendanceModel(
                 classId: subId,
                 createdAtDate: DateTime.now(),
                 selectedDate: selectedDate,
@@ -111,10 +115,12 @@ class _MarkStudentAttendancePageState extends State<MarkStudentAttendancePage> {
                   stdIdList,
                   p.attendanceStatus,
                 ),
-            );
-            _controller.markAttendance(model);
-            Navigator.pop(context);
-
+              );
+              _controller.markAttendance(model);
+              Navigator.pop(context);
+            } else {
+              Utils.toastMessage('Please add student first');
+            }
           },
           buttonColor: kSecondaryColor,
         ),

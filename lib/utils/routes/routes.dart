@@ -5,6 +5,7 @@ import 'package:attendance/view/add_subject/add_student/add_student_page.dart';
 import 'package:attendance/view/add_subject/add_subject_page.dart';
 import 'package:attendance/view/home/home_page.dart';
 import 'package:attendance/view/home/tab_bar/attendance/mark_student_attendance/mark_student_attendance.dart';
+import 'package:attendance/view/home/tab_bar/attendance/update_attendance/update_attendance_page.dart';
 import 'package:attendance/view/home/tab_bar/custom_tab_bar_page.dart';
 import 'package:attendance/view/home/tab_bar/history/attendance_history/attendance_history_page.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,10 @@ class Routes {
       case RouteName.attendanceHistoryPage:
         return MaterialPageRoute(
             builder: (_) => AttendanceHistoryPage(
+                model: settings.arguments as AttendanceModel));
+      case RouteName.updateAttendancePage:
+        return MaterialPageRoute(
+            builder: (_) => UpdateAttendancePage(
                 model: settings.arguments as AttendanceModel));
 
       default:

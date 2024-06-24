@@ -22,4 +22,13 @@ class SubjectController {
       Utils.toastMessage('Error. Please try again');
     }
   }
+
+  void addAttendanceCount (){
+
+  }
+
+  void subAttendanceCount(SubjectModel model) {
+    model.totalClasses -= 1;
+    model.save();
+  }
 }

@@ -98,7 +98,7 @@ class _CustomTabBarPageState extends State<CustomTabBarPage>
                         Tab(
                           child: Text('HISTORY'),
                         ),
-                      ]),
+                      ],),
                 ],
               ),
             ),
@@ -108,7 +108,7 @@ class _CustomTabBarPageState extends State<CustomTabBarPage>
                 children: [
                   AttendanceTab(subId: widget.model!.subjectId.toString()),
                   StudentTab(subId: widget.model!.subjectId.toString()),
-                  HistoryTab(subId: widget.model!.subjectId.toString(),),
+                  HistoryTab(subId: widget.model!.subjectId.toString()),
                 ],
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:attendance/constant/app_style/app_style.dart';
 import 'package:attendance/models/attendance/attendance_model.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,8 +16,17 @@ class AttendanceController {
       Utils.toastMessage('Error. Please try again');
     }
   }
+  void updateAttendance(AttendanceModel model) {
+    final box = Boxes.getAtdData(model.classId);
+    try {
+      box.put("$ATTENDANCE${model.classId}", model);
+      Utils.toastMessage('Attendance updated Successfully');
+    } catch (e) {
+      Utils.toastMessage('Error. Please try again');
+    }
+  }
 
-  void deleteAttendance(SubjectModel model) {
+  void deleteAttendance(AttendanceModel model) {
     try {
       model.delete();
       Utils.toastMessage('Attendance deleted Successfully');
