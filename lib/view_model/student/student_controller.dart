@@ -2,16 +2,51 @@ import 'package:attendance/models/attendance/attendance_model.dart';
 import 'package:attendance/models/student/student_model.dart';
 import 'package:attendance/view_model/boxes/boxes.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
+import 'package:uuid/uuid.dart';
 import '../../utils/utils.dart';
 
 class StudentController {
+  final Uuid _uuid = const Uuid();
   Future<void> addStudent(StudentModel model, String subId) async {
     try {
       final box = Boxes.getStdData(subId);
       await box.add(model);
       Utils.toastMessage("${model.studentRollNo}-${model.studentName} added");
     } catch (e) {
+      Utils.toastMessage('Error. Please try again');
+    }
+  }
+
+  Future<void> addStudentFromOtherSubject(
+    String subId,
+    String refSubId,
+  ) async {
+    try {
+      EasyLoading.show();
+      final box = Boxes.getStdData(refSubId);
+      final regNewBox = Boxes.getStdData(subId);
+      List<StudentModel> stdList = [];
+      List<StudentModel> refSubjectStdList = box.values.toList();
+
+      if (refSubjectStdList.isEmpty) {
+        EasyLoading.dismiss();
+        Utils.toastMessage('Empty main class. Cannot import students');
+        return;
+      } else {
+        for (var i in refSubjectStdList) {
+          StudentModel model = StudentModel(
+            studentId: i.studentId,
+            studentName: i.studentName,
+            studentRollNo: i.studentRollNo,
+          );
+          stdList.add(model);
+        }
+        await regNewBox.addAll(stdList);
+        EasyLoading.dismiss();
+        Utils.toastMessage('Students added successfully');
+      }
+    } catch (e) {
+      EasyLoading.dismiss();
       Utils.toastMessage('Error. Please try again');
     }
   }
@@ -44,11 +79,10 @@ class StudentController {
         String studentRollNo = stdRollsList[i];
         String studentName = stdNamesList[i];
 
-        // Check if the student roll number or name is already in the set
-        if (uniqueRollNumbers.contains(studentRollNo) ||
-            uniqueNames.contains(studentName)) {
+        // Check if the student roll number is already in the set
+        if (uniqueRollNumbers.contains(studentRollNo)) {
           Utils.toastMessage(
-              'Duplicate entry: $studentName or Roll Number: $studentRollNo');
+              'Duplicate entry: $studentName with Roll Number: $studentRollNo');
           continue; // Skip adding this entry
         } else if (studentName.isEmpty ||
             studentRollNo.isEmpty ||
@@ -63,8 +97,10 @@ class StudentController {
         uniqueNames.add(studentName);
 
         StudentModel model = StudentModel(
-            studentName: studentName.trim(),
-            studentRollNo: studentRollNo.trim());
+          studentId: _uuid.v4().toString(),
+          studentName: studentName.trim(),
+          studentRollNo: studentRollNo.trim(),
+        );
 
         studentModelList.add(model);
       }

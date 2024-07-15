@@ -1,5 +1,6 @@
 import 'package:attendance/models/subject/subject_model.dart';
 import 'package:attendance/view/add_subject/add_student/imports/all_subject_dialog.dart';
+import 'package:attendance/view_model/student/student_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -111,7 +112,14 @@ Future<void> importStudentFromSubjectDialog(
                                     child: CustomRoundButton(
                                       title: 'IMPORT',
                                       height: 32,
-                                      onPress: () {},
+                                      onPress: () async{
+                                        Navigator.pop(context);
+                                        await StudentController()
+                                            .addStudentFromOtherSubject(
+                                          subId,
+                                          model.subjectId!,
+                                        );
+                                      },
                                       buttonColor: kSecondaryColor,
                                     ),
                                   )
