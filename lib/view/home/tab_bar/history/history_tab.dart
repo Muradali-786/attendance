@@ -1,5 +1,7 @@
 import 'package:attendance/models/attendance/attendance_model.dart';
+import 'package:attendance/view_model/media/media_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../constant/app_style/app_color.dart';
 import '../../../../constant/app_style/app_style.dart';
 import '../../../../size_config.dart';
@@ -55,21 +57,25 @@ class _HistoryTabState extends State<HistoryTab> {
           }
         },
       ),
-      bottomSheet:Container(
+      bottomSheet: Container(
         height: 36,
         alignment: Alignment.bottomCenter,
         margin: const EdgeInsets.only(bottom: 16),
-        child: CustomRoundButton(
-          height: getProportionalHeight(36),
-          width: getProportionalWidth(190),
-          title: 'EXPORT ATTENDANCE',
-
-          onPress: () {
-
+        child: Consumer<MediaController>(
+          builder: (context, provider, _) {
+            return CustomRoundButton(
+              height: getProportionalHeight(36),
+              width: getProportionalWidth(190),
+              loading: provider.loading,
+              title: 'EXPORT ATTENDANCE',
+              onPress: () {
+                provider.exportAttendanceSheet(widget.subId);
+              },
+              buttonColor: kSecondaryColor,
+            );
           },
-          buttonColor: kSecondaryColor,
         ),
-      )
+      ),
     );
   }
 }

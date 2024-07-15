@@ -89,24 +89,27 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     left: 0,
                     child: SizedBox(
                       height: SizeConfig.screenHeight! * 0.83,
-                      child: ListView.builder(
-                        itemCount: box.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return CustomListTile(
-                            title: data[index].studentName.toString(),
-                            keyValue: data[index].studentId.toString(),
-                            subtitle: data[index].studentRollNo.toString(),
-                            trailingFirstText:
-                                "${data[index].attendancePercentage.toString()}%",
-                            trailingSecondText: 'Attendance',
-                            onPress: () {},
-                            onLongPress: () {},
-                            onDismiss: () async{
-                              await StudentController().deleteStudent(data[index]);
-                            },
-                          );
-                        },
+                      child: Expanded(
+                        child: ListView.builder(
+                          itemCount: box.length,
+                         physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return CustomListTile(
+                              title: data[index].studentName.toString(),
+                              keyValue: data[index].studentId.toString(),
+                              subtitle: data[index].studentRollNo.toString(),
+                              trailingFirstText:
+                                  "${data[index].attendancePercentage.toString()}%",
+                              trailingSecondText: 'Attendance',
+                              onPress: () {},
+                              onLongPress: () {},
+                              onDismiss: () async{
+
+                                await StudentController().deleteStudent(data[index]);
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   );

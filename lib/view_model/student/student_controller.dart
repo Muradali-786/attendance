@@ -1,13 +1,14 @@
 import 'package:attendance/models/attendance/attendance_model.dart';
 import 'package:attendance/models/student/student_model.dart';
 import 'package:attendance/view_model/boxes/boxes.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../utils/utils.dart';
 
 class StudentController {
-  Future<void> addStudent(StudentModel model, String subId) async{
+  Future<void> addStudent(StudentModel model, String subId) async {
     try {
-      final box =Boxes.getStdData(subId);
+      final box = Boxes.getStdData(subId);
       await box.add(model);
       Utils.toastMessage("${model.studentRollNo}-${model.studentName} added");
     } catch (e) {
@@ -15,7 +16,70 @@ class StudentController {
     }
   }
 
-  Future<void> updateStudentData(StudentModel model, int index, String subId)async {
+  Future<void> addStudentList(
+    String subId,
+    List stdRollsList,
+    List stdNamesList,
+  ) async {
+    try {
+      EasyLoading.show();
+      final box = Boxes.getStdData(subId);
+      if (stdRollsList.length != stdNamesList.length) {
+        EasyLoading.dismiss();
+        Utils.toastMessage(
+            'The lists of roll numbers and names must have the same length.');
+        return;
+      } else if (stdRollsList.isEmpty || stdNamesList.isEmpty) {
+        EasyLoading.dismiss();
+        Utils.toastMessage(
+            'Please ensure the Excel sheet is not empty and is in the correct format.');
+        return;
+      }
+
+      List<StudentModel> studentModelList = [];
+      Set<String> uniqueRollNumbers = {};
+      Set<String> uniqueNames = {};
+
+      for (int i = 0; i < stdRollsList.length; i++) {
+        String studentRollNo = stdRollsList[i];
+        String studentName = stdNamesList[i];
+
+        // Check if the student roll number or name is already in the set
+        if (uniqueRollNumbers.contains(studentRollNo) ||
+            uniqueNames.contains(studentName)) {
+          Utils.toastMessage(
+              'Duplicate entry: $studentName or Roll Number: $studentRollNo');
+          continue; // Skip adding this entry
+        } else if (studentName.isEmpty ||
+            studentRollNo.isEmpty ||
+            studentName.length < 3) {
+          Utils.toastMessage(
+              'Invalid entry: $studentName or Roll Number: $studentRollNo');
+          continue;
+        }
+
+        // Add roll number and name to the set to keep track of unique entries
+        uniqueRollNumbers.add(studentRollNo);
+        uniqueNames.add(studentName);
+
+        StudentModel model = StudentModel(
+            studentName: studentName.trim(),
+            studentRollNo: studentRollNo.trim());
+
+        studentModelList.add(model);
+      }
+
+      await box.addAll(studentModelList);
+      EasyLoading.dismiss();
+      Utils.toastMessage('Students added successfully');
+    } catch (e) {
+      EasyLoading.dismiss();
+      Utils.toastMessage('Error. Please try again');
+    }
+  }
+
+  Future<void> updateStudentData(
+      StudentModel model, int index, String subId) async {
     try {
       final box = Boxes.getStdData(subId);
       await box.putAt(index, model);
@@ -32,7 +96,7 @@ class StudentController {
     return studentExists;
   }
 
-  Future<void> deleteStudent(StudentModel model) async{
+  Future<void> deleteStudent(StudentModel model) async {
     try {
       await model.delete();
       Utils.toastMessage(
@@ -42,7 +106,7 @@ class StudentController {
     }
   }
 
-  Future<void> deleteStudentBox(String subId)async {
+  Future<void> deleteStudentBox(String subId) async {
     try {
       final box = Boxes.getStdData(subId);
       await box.deleteFromDisk();
@@ -51,7 +115,7 @@ class StudentController {
     }
   }
 
-  Future<void> calculateStudentAttendance(String subId) async{
+  Future<void> calculateStudentAttendance(String subId) async {
     try {
       dynamic stdBox = Boxes.getStdData(subId);
       dynamic atnBox = Boxes.getAtdData(subId);
@@ -110,7 +174,7 @@ class StudentController {
     List<StudentModel> stdData,
     AttendanceModel atnModel,
     String subId,
-  ) async{
+  ) async {
     try {
       final stdBox = Boxes.getStdData(subId);
 
@@ -159,7 +223,7 @@ class StudentController {
   Future<void> subtractStudentAttendance(
     AttendanceModel atnModel,
     String subId,
-  ) async{
+  ) async {
     try {
       final stdBox = Boxes.getStdData(subId);
       List<StudentModel> stdData = stdBox.values.toList().cast<StudentModel>();
@@ -200,7 +264,7 @@ class StudentController {
           totalLeaves: totalLeaves,
           attendancePercentage: percentage,
         );
-       await stdBox.putAt(i, model);
+        await stdBox.putAt(i, model);
       }
     } catch (e) {
       Utils.toastMessage('Error. Please try again');

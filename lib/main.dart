@@ -6,6 +6,7 @@ import 'package:attendance/utils/routes/route_name.dart';
 import 'package:attendance/utils/routes/routes.dart';
 import 'package:attendance/view_model/attendance/attendance_controller.dart';
 import 'package:attendance/view_model/boxes/boxes.dart';
+import 'package:attendance/view_model/media/media_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -42,13 +43,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+
         ChangeNotifierProvider<AttendanceProvider>(
           create: (_) => AttendanceProvider(),
+        ),
+        ChangeNotifierProvider<MediaController>(
+          create: (_) => MediaController(),
         ),
       ],
       child: ToastificationWrapper(
         child: MaterialApp(
-          title: 'Attendee',
+          title: 'Attendance Manager',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             useMaterial3: false,

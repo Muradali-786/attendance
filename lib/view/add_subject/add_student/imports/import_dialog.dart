@@ -1,10 +1,12 @@
+import 'package:attendance/view/add_subject/add_student/imports/import_std_subject_dialog.dart';
 import 'package:flutter/material.dart';
 import '../../../../constant/app_style/app_color.dart';
 import '../../../../size_config.dart';
 import '../../../../utils/components/custom_round_button.dart';
+import 'import_excel_sheet_dialog.dart';
 
 Future<void> showImportDialog(
-    BuildContext context, String currentClassId) async {
+    BuildContext context, String currentSubId) async {
   SizeConfig().init(context);
   await showDialog(
     context: context,
@@ -67,7 +69,7 @@ Future<void> showImportDialog(
                       title: 'IMPORT FROM EXCEL',
                       onPress: () async {
                         Navigator.pop(context);
-                        // await importExcelSheetDialog(context,currentClassId);
+                        await importExcelSheetDialog(context,currentSubId);
                       },
                       buttonColor: kSecondaryColor),
                 ),
@@ -86,7 +88,7 @@ Future<void> showImportDialog(
                       title: 'IMPORT FROM CLASS',
                       onPress: () async {
                         Navigator.pop(context);
-                        // importStudentFromClassesDialog(context, null,currentClassId);
+                        importStudentFromSubjectDialog(context, null, currentSubId);
                       },
                       buttonColor: kSecondaryColor),
                 ),
